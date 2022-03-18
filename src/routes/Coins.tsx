@@ -15,6 +15,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bolder;
 `;
 
 const CoinList = styled.ul``;
@@ -29,6 +30,7 @@ const Coin = styled.li`
     align-items: center;
     padding: 20px;
     transition: color 0.2s ease-in;
+    font-weight: bolder;
   }
   &:hover {
     a {

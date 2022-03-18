@@ -15,28 +15,41 @@ import Price from './Price';
 
 const Title = styled.h1`
   font-size: 48px;
+  font-weight: bolder;
   color: ${props => props.theme.accentColor};
 `;
 
 const Overview = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   border-radius: 10px;
 `;
+
+const Overview2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+
 const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  widthL 33%;
-  span:first-child {
-    font-size: 10px;
-    font-weight: 400;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-  }
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+  height: 25px;
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: uppercase;
 `;
+
 const Description = styled.p`
   margin: 20px 0px;
 `;
@@ -50,8 +63,14 @@ const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
+  font-size: 15px;
 `;
 
+const Home = styled.span`
+  color: green;
+  font-size: 50px;
+  position: absolute;
+`;
 const Header = styled.header`
   height: 15vh;
   display: flex;
@@ -69,7 +88,7 @@ const Tabs = styled.div`
 const Tab = styled.span<{isActive: boolean}>`
   text-align: center;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 400;
   background-color: rgba(0, 0, 0, 0.5);
 
@@ -170,6 +189,9 @@ function Coin() {
           {state?.name ? state.name : loading ? 'Loading...' : infoData?.name}
         </title>
       </Helmet>
+      <Home>
+        <Link to="/">◀️</Link>
+      </Home>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? 'Loading...' : infoData?.name}
@@ -181,29 +203,24 @@ function Coin() {
         <>
           <Overview>
             <OverviewItem>
-              <span>Rank:</span>
-              <span>{infoData?.rank}</span>
+              <span>Rank: {infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
+              <span>Symbol: {infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Price:</span>
-              <span>${tickersData?.quotes.USD.price.toFixed(2)}</span>
+              <span>Price: ${tickersData?.quotes.USD.price.toFixed(2)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
-          <Overview>
+          <Overview2>
             <OverviewItem>
-              <span>Total Suply:</span>
-              <span>{tickersData?.total_supply}</span>
+              <span>Total Supply: {tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Max Supply:</span>
-              <span>{tickersData?.max_supply}</span>
+              <span>Max Supply: {tickersData?.max_supply}</span>
             </OverviewItem>
-          </Overview>
+          </Overview2>
 
           <Tabs>
             <Tab isActive={chartMatch !== null}>
@@ -216,7 +233,7 @@ function Coin() {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price isLoading={tickersLoading} data={tickersData} />
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart coinId={coinId} />
