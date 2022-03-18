@@ -3,6 +3,8 @@ import {Helmet} from 'react-helmet';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import {fetchCoins} from '../api';
+import {useSetRecoilState} from 'recoil';
+import {isDarkAtom} from '../atoms';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -21,8 +23,9 @@ const Header = styled.header`
 const CoinList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
-  color: ${props => props.theme.bgColor};
+  background-color: ${props => props.theme.cardBgColor};
+  color: ${props => props.theme.textColor};
+  border: 1px solid white;
   border-radius: 15px;
   margin-bottom: 10px;
   a {
@@ -42,6 +45,7 @@ const Coin = styled.li`
 const Title = styled.h1`
   font-size: 48px;
   color: ${props => props.theme.accentColor};
+  padding-right: 10px;
 `;
 
 const Loader = styled.span`
@@ -66,14 +70,18 @@ interface ICoin {
 }
 
 function Coins() {
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom(prev => !prev);
   const {isLoading, data} = useQuery<ICoin[]>('allCoins', fetchCoins);
   return (
     <Container>
       <Helmet>
         <title>Coins</title>
       </Helmet>
+
       <Header>
-        <Title>Coins</Title>
+        <Title>Coins Tracker</Title>
+        <button onClick={toggleDarkAtom}>Toggle Mode</button>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
